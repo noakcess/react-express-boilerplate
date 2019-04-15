@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+@import url('https://use.fontawesome.com/releases/v5.7.2/css/all.css');
+
+$white: #FFFFFF;
+$red: red;
+$green: green;
+$blue: blue;
+
+$pri: #282c34;
+$alt: $blue;
+$sec: $alt;
+
+$color-pri: $pri;
+$color-pri-lighter: lighten($color-pri, 25%);
+$color-pri-darker: darken($color-pri, 25%);
+
+$color-sec: $sec;
+$color-sec-lighter: lighten($color-sec, 25%);
+$color-sec-darker: darken($color-sec, 25%);
+
+$color-alt: $blue;
+$color-alt-lighter: lighten($color-alt, 25%);
+$color-alt-darker: darken($color-alt, 25%);
+
+
+$gray: darken($white, 50%);
+$gray-lighter: lighten($gray, 25%);
+$gray-darker: darken($gray, 25%);
+
+
+
+$screen-xs-max: 767px;
+$screen-sm-min: 768px;
+$screen-sm-max: 991px;
+$screen-md-min: 992px;
+$screen-md-max: 1199px;
+$screen-lg-min: 1200px;
+$screen-xlg-min: 1600px;
+@mixin phone() { @media (max-width: $screen-xs-max) { @content; } }
+@mixin tablet() { @media (min-width: $screen-sm-min) { @content; } }
+@mixin laptop() { @media (min-width: $screen-md-min) { @content; } }
+@mixin desktop() { @media (min-width: $screen-lg-min) { @content; } }
+@mixin desktop-lg() { @media (min-width: $screen-xlg-min) { @content; } }
+/*  @include desktop() { padding: 0; margin: 0; }*/
+
+@mixin first-child() { &:first-of-type { @content } }
+/* @include first-child() { background: red; } */
+@mixin last-child() { &:last-of-type { @content } }
+/* @include last-child() { background: red; }   */
+@mixin even() { &:nth-child(even) { @content } }
+/* @include evens() { background: red; }    */
+@mixin odd(){ &:nth-child(odd) { @content } }
+/*  @include odd() { background: red; }     */
+@mixin each($num) { &:nth-child(#{$num}n) { @content } }
+/*  @include each(3) { background: red; } */
+
+@mixin border($direction, $width, $style, $color) {
+    border-#{$direction}: $width $style $color;
+}
+
+// custom scroll-bar
+@mixin custom-scroll-bar() {
+    &::-webkit-scrollbar {
+        border-radius: 10px;
+        height: 10px;
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #999;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 10px;
+    }
+}
+
+// no scroll bar
+@mixin no-scroll-bar() {
+    &::-webkit-scrollbar {
+        height: 0;
+        width: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        height: 0;
+        width: 0;
+    }
+
+    &::-webkit-scrollbar-track {
+        height: 0;
+        width: 0;
+    }
+}
+
+/*  @include border('top', 1px, solid, #ccc);   */
+.clearfix:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+/*  vertical align */
+.block {
+    text-align: center;
+    white-space: nowrap;
+}
+.block:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; /* Adjusts for spacing */
+
+}
+.centered {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: auto;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.isSelectable {
+    -webkit-user-select: all;  /* Chrome 49+ */
+    -moz-user-select: all;     /* Firefox 43+ */
+    -ms-user-select: all;      /* No support yet */
+    user-select: all;          /* Likely future */
+}
+.notSelectable {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}
+
+.no-padding {
+    padding: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+
+    > .col,
+    > [class*="col-"] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+:focus {
+    outline: none !important;
+}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    font-weight: normal;
+}
+.primary,
+.alert-primary,
+.bg-primary,
+.btn-primary,
+.badge-primary,
+.card-primary,
+.list-group-item-primary,
+.text-primary {
+    background-color: $blue !important;
+}
+.diagnostic {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    font-size: 80%;
+    opacity: .7;
+    z-index: 9999;
+    pointer-events: none;
+    .list-group {
+        margin: 5px;
+        .list-group-item {
+            padding: 5px 10px;
+        }
+    }
+}
+
+.fade-enter {
+    opacity: 0;
+    z-index: 1;
+    background-color: transparent;
+}
+
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+
+}
+
+.animation {
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+* {
+    box-sizing: content-box;
+    background-color: inherit;
+    //@extend .notSelectable;
+}
+.list-group-item {
+    border: none;
+}
+
+.form-control {
+    padding: .2rem 0;
+    height: calc(1.25rem + 2px);
+}
+.collapse {
+    @extend .animation;
+}
+.link {
+    cursor: pointer;
+}
+label {
+    font-size: .8rem;
+}

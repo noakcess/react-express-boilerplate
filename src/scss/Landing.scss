@@ -1,0 +1,29 @@
+@import 'defaults';
+#root {
+
+}
+.Landing {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    .splash {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        opacity: .20;
+        pointer-events: none;
+    }
+    .LandingWrapper {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        @extend .animation;
+    }
+    .jumbotron:first-child {
+        text-align: center;
+    }
+}

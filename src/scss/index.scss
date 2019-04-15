@@ -1,0 +1,30 @@
+@import "debug";
+@import "defaults";
+
+body {
+    background-color: #282c34;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    .nav-item, .nav-link {
+        -webkit-transition: color 0.1s ease;
+        -moz-transition: color 0.1s ease;
+        -ms-transition: color 0.1s ease;
+        -o-transition: color 0.1s ease;
+        transition: color 0.1s ease;
+        color: white;
+        &:hover {
+            color: darkgrey;
+            cursor: pointer;
+        }
+    }
+}
+span {
+    background-color: inherit;
+}
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

@@ -1,0 +1,14 @@
+@import 'defaults';
+
+.Config {
+    .toast {
+        margin: 10px;
+        padding: 10px;
+        //min-width: 200px;
+        background-color: $color-alt-lighter;
+    }
+    .Settings {
+        margin: auto 5px 5px 25px;
+        font-size: 0.8rem;
+    }
+}
