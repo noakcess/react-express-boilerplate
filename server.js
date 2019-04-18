@@ -7,9 +7,8 @@ fs = require('fs');
 require('./sys/Utility.js');
 
 DB = require('./sys/Db.js');
-DB.init();
-MODELS = require('./sys/Models');
-ROUTES = MODELS.Routes;
+
+const ROUTES = require('./sys/Routes');
 
 const { exec } = require('child_process');
 const cors = require('cors');
@@ -37,40 +36,62 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(cookieParser());
 
-
-server.get(ROUTES.Get ,(req, res, next) => {
-    console.log('Get');
-    res.json({ get: 'worked' });
+_.mapObject(ROUTES.list, (routes, method) => {
+    // console.log({ method, routes });
+    server[method.toLowerCase()](routes, (req, res, next) => {
+        const { query, body } = req;
+        const { pathname } = req._parsedUrl;
+        console.log(method);
+        if (typeof(ROUTES[method][pathname]) === 'function')  {
+            ROUTES[method][pathname](req, { query, body })
+                .then(response => res.json(response));
+        } else {
+            res.json({ [method]: 'worked' });
+        }
+    });
 });
-server.post(ROUTES.Post ,(req, res, next) => {
-    console.log('Post');
-    res.json({ post: 'worked' });
-});
-server.put(ROUTES.Put,(req, res, next) => {
-    console.log('Put');
-    res.json({ put: 'worked' });
-});
-server.delete(ROUTES.Delete ,(req, res, next) => {
-    console.log('Delete');
-    res.json({ delete: 'worked' });
-});
+// console.log('Get', Get);
+//
+// server.get(Get, (req, res, next) => {
+//     console.log('Get');
+//     res.json({ get: 'worked' });
+// });
+//
+// console.log('Post', Post);
+// server.post(Post, (req, res, next) => {
+//     const { pathname } = req._parsedUrl;
+//     console.log('Post');
+//     res.json({ post: 'worked', pathname });
+// });
+//
+// console.log('Put', Put);
+// server.put(Put, (req, res, next) => {
+//     console.log('Put');
+//     res.json({ put: 'worked' });
+// });
+//
+// console.log('Delete', Delete);
+// server.delete(Delete, (req, res, next) => {
+//     console.log('Delete');
+//     res.json({ delete: 'worked' });
+// });
 // console.log('DB.models', Object.keys(DB.models).join('; '));
 
-server.post('*', (req, res, next) => {
-    const { query, params, body } = req;
-    const { pathname } = req._parsedUrl;
-    const finished = (result = {}) => {
-        res.json({ query, params, body, result });
-    };
-    
-    if (DB.models[ pathname ]) {
-        DB.models[ pathname ](body, params)
-            .then(response => {
-                finished(response);
-            });
-    } else finished(false);
-    
-});
+// server.post('*', (req, res, next) => {
+//     const { query, params, body } = req;
+//     const { pathname } = req._parsedUrl;
+//     const finished = (result = {}) => {
+//         res.json({ query, params, body, result });
+//     };
+//
+//     if (DB.models[ pathname ]) {
+//         DB.models[ pathname ](body, params)
+//             .then(response => {
+//                 finished(response);
+//             });
+//     } else finished(false);
+//
+// });
 server.listen(3001, function () {
     console.log('listening on 3001');
 });

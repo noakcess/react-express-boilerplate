@@ -15,12 +15,13 @@ const FormSelect = ({ label = true, name, value, opts=[], onChange = DefaultOpti
                 className={'form-control'}
                 name={name}
                 id={`id-${name}`}
-                defaultValue={value}
+                value={ value }
+                title={value.toString()}
                 onChange={onChange.bind(this)}
             >
                 {opts.map(opt => {
                     const label = deCamelize(opt, ' ');
-                    return <option key={opt} value={opt}>{label}</option>
+                    return <option key={opt} value={opt.toString()}>{label}</option>
                 })}
             </select>
         )

@@ -332,6 +332,9 @@ module.exports = function(webpackEnv) {
             ],
         },
         plugins: [
+            new webpack.ProvidePlugin({
+                Promise: 'es6-promise-promise'
+            }),
             new HtmlWebpackPlugin(
                 Object.assign(
                     {},

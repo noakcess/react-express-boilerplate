@@ -1,3 +1,4 @@
+/*eslint no-extend-native: "off"*/
 import React from 'react'
 import { Label } from 'reactstrap';
 import deCamelize from 'decamelize';

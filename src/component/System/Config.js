@@ -18,23 +18,30 @@ const Log = window.Log;
 class Config extends Component {
     state = {
         collapsed: [],
-        form: {}
+        form: this.context.Config.form
     };
     
     componentWillMount() {
         const context = this.context;
         const { form = {} } = context.Config;
-        this.setState({ form }, () => {
-            Log.info({ form: this.state.form });
-        });
+        ConfigService.load()
+            .then(( config = false ) => {
+                Log.info({ config });
+                this.setState({ form: config || form });
+            });
         
-        ConfigService.init();
+        
     }
     handleClear = (e) => {
         Log.info(e);
     };
     handleSave = (e) => {
         Log.info(e);
+        const { form } = this.state;
+        ConfigService.save(form)
+            .then(response => {
+                Log.info({ response });
+            })
     };
     handleOnChange = (e) => {
         const { target } = e.nativeEvent;

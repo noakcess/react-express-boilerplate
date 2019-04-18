@@ -11,12 +11,12 @@ const configUpdate = (e) => {
 export const ConfigOptions = {
     form: {
         name: 'react-express-container-' + Date.now(),
-        code: false,
-        readonly: false,
+        code: 'false',
+        readonly: 'false',
         dateModified: Date.now(),
         services: {
             mysql: {
-                active: false,
+                active: 'false',
                 config: {
                     name: '',
                     host: '',
@@ -24,12 +24,12 @@ export const ConfigOptions = {
                     pass: '',
                     database: ''
                 },
-                source: false,
-                backup: false
+                source: 'false',
+                backup: 'false'
             
             },
             redis: {
-                active: false,
+                active: 'false',
                 config: {
                     name: '',
                     host: '',
@@ -37,11 +37,11 @@ export const ConfigOptions = {
                     pass: '',
                     database: ''
                 },
-                source: false,
-                backup: false
+                source: 'false',
+                backup: 'false'
             },
             mongo: {
-                active: false,
+                active: 'false',
                 config: {
                     name: '',
                     host: '',
@@ -49,8 +49,8 @@ export const ConfigOptions = {
                     pass: '',
                     database: ''
                 },
-                source: false,
-                backup: false
+                source: 'false',
+                backup: 'false'
             },
         }
     },

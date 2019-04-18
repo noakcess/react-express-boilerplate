@@ -1,3 +1,4 @@
+const Config = require('./Config');
 const makeDbPromise = (payload) => {
     return new Promise((resolve, reject) => {
         DB.query(payload, resolve);
@@ -24,31 +25,32 @@ const makePromise = (payload) => {
 //     }
 // };
 
-const Get = {
+const GET = {
     '/': () => {
-        return makePromise({worked: true})
+        return makePromise({ status: 'working' });
     },
     '/config': () => {
-        return makePromise({worked: true});
+        return Config.get();
     }
 };
-const Post = {
-    '/config': () => {
-        return makePromise({worked: true});
+const POST = {
+    '/config/update': (req, data) => {
+        return Config.update(data);
     }
 };
-const Put = {
+const PUT = {
 
 };
-const Delete = {
+const DELETE = {
 
 };
+
 const Routes = {
-    Get: Object.keys(Get),
-    Post: Object.keys(Post),
-    Put: Object.keys(Put),
-    Delete: Object.keys(Delete)
+    GET: Object.keys(GET),
+    POST: Object.keys(POST),
+    PUT: Object.keys(PUT),
+    DELETE: Object.keys(DELETE)
 };
 
 console.log('[ Routes ]', JSON.stringify(Routes));
-module.exports = { Routes, Get, Post, Put, Delete };
+module.exports = { list: Routes, GET, POST, PUT, DELETE };
