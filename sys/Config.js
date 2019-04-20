@@ -15,7 +15,7 @@ class Config {
     update(data) {
         return new Promise((resolve, reject) => {
             fs.writeFileSync(this.filename, JSON.stringify(data.body));
-            resolve(data);
+            resolve({ success: true });
         });
     }
 }
