@@ -1,7 +1,8 @@
 import React from 'react';
 
 const Log = window.Log;
-
+const { REACT_APP_SERVER } = process.env;
+Log.info({ REACT_APP_SERVER });
 const configUpdate = (e) => {
     const { target } = e.nativeEvent;
     const { name, value } = target;
@@ -11,6 +12,8 @@ const configUpdate = (e) => {
 export const ConfigOptions = {
     form: {
         name: 'react-express-container-' + Date.now(),
+        port: 3000,
+        socket: false,
         code: 'false',
         readonly: 'false',
         dateModified: Date.now(),
@@ -18,9 +21,9 @@ export const ConfigOptions = {
             mysql: {
                 active: 'false',
                 config: {
-                    name: '',
-                    host: '',
-                    port: '',
+                    name: 'server-mysql',
+                    host: 'localhost',
+                    port: 3306,
                     pass: '',
                     database: ''
                 },
@@ -31,9 +34,9 @@ export const ConfigOptions = {
             redis: {
                 active: 'false',
                 config: {
-                    name: '',
-                    host: '',
-                    port: '',
+                    name: 'server-redis',
+                    host: 'localhost',
+                    port: 6379,
                     pass: '',
                     database: ''
                 },
@@ -43,9 +46,9 @@ export const ConfigOptions = {
             mongo: {
                 active: 'false',
                 config: {
-                    name: '',
-                    host: '',
-                    port: '',
+                    name: 'server-mongo',
+                    host: 'localhost',
+                    port: 27017,
                     pass: '',
                     database: ''
                 },

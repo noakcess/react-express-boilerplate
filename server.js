@@ -5,11 +5,12 @@ async = require('async');
 path = require('path');
 fs = require('fs');
 require('./sys/Utility.js');
-
-DB = require('./sys/Db.js');
+Util = require('./sys/Utility');
+Config = require('./sys/Config');
+Socket = require('./sys/Socket');
+DB = require('./sys/Db');
 
 const ROUTES = require('./sys/Routes');
-
 const { exec } = require('child_process');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -17,6 +18,7 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const express = require('express');
 const server = express();
+let configs = Config.data;
 server.use(
     cors({
         credentials: true,
@@ -50,49 +52,12 @@ _.mapObject(ROUTES.list, (routes, method) => {
         }
     });
 });
-// console.log('Get', Get);
-//
-// server.get(Get, (req, res, next) => {
-//     console.log('Get');
-//     res.json({ get: 'worked' });
-// });
-//
-// console.log('Post', Post);
-// server.post(Post, (req, res, next) => {
-//     const { pathname } = req._parsedUrl;
-//     console.log('Post');
-//     res.json({ post: 'worked', pathname });
-// });
-//
-// console.log('Put', Put);
-// server.put(Put, (req, res, next) => {
-//     console.log('Put');
-//     res.json({ put: 'worked' });
-// });
-//
-// console.log('Delete', Delete);
-// server.delete(Delete, (req, res, next) => {
-//     console.log('Delete');
-//     res.json({ delete: 'worked' });
-// });
-// console.log('DB.models', Object.keys(DB.models).join('; '));
 
-// server.post('*', (req, res, next) => {
-//     const { query, params, body } = req;
-//     const { pathname } = req._parsedUrl;
-//     const finished = (result = {}) => {
-//         res.json({ query, params, body, result });
-//     };
-//
-//     if (DB.models[ pathname ]) {
-//         DB.models[ pathname ](body, params)
-//             .then(response => {
-//                 finished(response);
-//             });
-//     } else finished(false);
-//
-// });
-server.listen(3001, function () {
-    console.log('listening on 3001');
-});
+setInterval(() => {
+    if (compare(configs, Config.data, false)) {
+        configs = Config.data;
+        Config.process(server);
+    }
+}, 5000);
+
 

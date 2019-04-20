@@ -1,11 +1,49 @@
 @import 'defaults';
 
 .Config {
+
+    .mysql {
+        color: #ffffff;
+        background-color: #5b86a0;
+        label {
+            background-color: lighten(#5b86a0, 25%);
+        }
+    }
+    .mongo {
+        color: #ffffff;
+        background-color: #109a4c;
+        label {
+            background-color: lighten(#109a4c, 25%);
+        }
+    }
+    .redis {
+        color: #ffffff;
+        background-color: #a41a11;
+        label {
+            background-color: lighten(#a41a11, 25%);
+        }
+    }
+    label {
+        color: #000000;
+        background-color: $gray-lighter;
+        margin-bottom: 0;
+        padding: 0 25px 0 20px;
+        border-radius: 0 10px 0 0;
+    }
+    .form-group {
+        margin-bottom: 5px;
+    }
     .toast {
         margin: 10px;
         padding: 10px;
         //min-width: 200px;
-        background-color: $color-alt-lighter;
+        //background-color: $color-info;
+    }
+    .Messages {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
     }
     .Settings {
         margin: auto 5px 5px 25px;

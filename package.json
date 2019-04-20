@@ -6,9 +6,7 @@
         "verbose": false,
         "ignore": [
             "src//.",
-            "build//.",
-            "dev_build.txt",
-            "config.json"
+            "build//."
         ]
     },
     "dependencies": {

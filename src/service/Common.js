@@ -1,7 +1,11 @@
+const Log = window.Log;
+export default Log;
 export { default as Util } from './Util';
-// export { default as Log } from './Log';
+
+
 export { default as FormService } from './FormService';
 export { default as ConfigService } from './ConfigService';
+export { default as SocketService } from './SocketService';
 
 export {default as moment} from 'moment';
 export { default as momentTZ } from 'moment-timezone';

@@ -1,14 +1,23 @@
+/*
+https://www.bestcssbuttongenerator.com/#/12
+*/
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 @import url('https://use.fontawesome.com/releases/v5.7.2/css/all.css');
-
+@import 'Button';
 $white: #FFFFFF;
 $red: red;
 $green: green;
 $blue: blue;
 
+$color-trace: #b2d9ea;
+$color-info: #d7e7a9;
+$color-warn: #f2cf59;
+$color-error: #e69288;
+
 $pri: #282c34;
-$alt: $blue;
-$sec: $alt;
+$sec: #bee5eb;
+$alt: $color-trace;
+
 
 $color-pri: $pri;
 $color-pri-lighter: lighten($color-pri, 25%);
@@ -22,12 +31,9 @@ $color-alt: $blue;
 $color-alt-lighter: lighten($color-alt, 25%);
 $color-alt-darker: darken($color-alt, 25%);
 
-
 $gray: darken($white, 50%);
-$gray-lighter: lighten($gray, 25%);
+$gray-lighter: lighten($gray, 45%);
 $gray-darker: darken($gray, 25%);
-
-
 
 $screen-xs-max: 767px;
 $screen-sm-min: 768px;
@@ -172,21 +178,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 .list-group-item-primary,
 .text-primary {
     background-color: $blue !important;
-}
-.diagnostic {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    font-size: 80%;
-    opacity: .7;
-    z-index: 9999;
-    pointer-events: none;
-    .list-group {
-        margin: 5px;
-        .list-group-item {
-            padding: 5px 10px;
-        }
-    }
 }
 
 .fade-enter {

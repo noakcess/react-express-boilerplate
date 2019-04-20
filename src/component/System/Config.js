@@ -5,18 +5,25 @@ import React, {Component} from 'react'
 import { Toast, ToastBody, ToastHeader } from 'reactstrap'; /* , Spinner */
 import { ListGroup, ListGroupItem, ListGroupItemHeading } from 'reactstrap';
 import { Form } from 'reactstrap';
+import { Badge } from 'reactstrap';
+
 
 import { FormInput, FormSelect, FormButton } from 'Input/Common';
 
 import { Util, ConfigService } from 'Service/Common';
 
 import { SystemContext } from 'Context/SystemContext';
+
+import { last } from 'underscore';
 import 'Css/Config.scss';
 
 const Log = window.Log;
 
 class Config extends Component {
+    config = false;
     state = {
+        loaded: false,
+        messages: [],
         collapsed: [],
         form: this.context.Config.form
     };
@@ -26,8 +33,9 @@ class Config extends Component {
         const { form = {} } = context.Config;
         ConfigService.load()
             .then(( config = false ) => {
-                Log.info({ config });
-                this.setState({ form: config || form });
+                this.config = config;
+                Log.info({ config, thisConfig: this.config });
+                this.setState({ loaded: true, form: { ...form, ...config } || form });
             });
         
         
@@ -43,13 +51,25 @@ class Config extends Component {
                 Log.info({ response });
             })
     };
+    handleMessages = (field) => {
+        let { form, messages = [] } = this.state;
+        const changed = Util.compare(form, this.config, false);
+        if (changed) messages = [];
+        else if(['host', 'port', 'socket'].includes(field)) {
+            const text = 'Requires Restart Of Server';
+            if (!messages.includes(text)) messages.push(text);
+        }
+        this.setState({ messages });
+        
+    };
     handleOnChange = (e) => {
         const { target } = e.nativeEvent;
         const { name, value } = target;
         let { form } = this.state;
         const fields = name.split('.');
-        Log.info({ target, name, value, fields, form });
         
+        Log.info({ target, name, value, fields, form });
+        this.handleMessages(last(fields));
         if (fields.length === 2) form[fields[1]] = value;
         else if (fields.length === 3) form[fields[1]][fields[2]] = value;
         else if (fields.length === 4) form[fields[1]][fields[2]][fields[3]] = value;
@@ -58,6 +78,7 @@ class Config extends Component {
         this.setState({ form });
         
     };
+
     toggleCollapse = (service) => {
         let collapsed = this.state.collapsed || [];
         if (collapsed.includes(service)) collapsed = collapsed.filter(temp => temp !== service);
@@ -80,6 +101,26 @@ class Config extends Component {
             </div>
         )
     };
+    _renderServiceActions =  (id) => {
+        const onClick = (action) => {
+            Log.info({ id, action });
+        };
+        const actions = ['start', 'stop', 'restart', 'backup'];
+        return (
+            <div>
+                {actions.map((action, index) => {
+                    return (
+                        <button type={'button'} className={'btn'}
+                             key={index}
+                             onClick={onClick.bind(this, action)}
+                        >
+                            {action}
+                        </button>
+                    )
+                })}
+            </div>
+        )
+    };
     _renderOpts = (id, opts = {}) => {
         const { active, source, backup, config } = opts || {};
         const list = Object.keys(opts);
@@ -88,6 +129,9 @@ class Config extends Component {
         return (
             <ToastBody>
                 <Form title={list.join('; ')}>
+                    <div className={'form-group'}>
+                        {this._renderServiceActions(id)}
+                    </div>
                     <FormSelect name={`${id}active`} value={active} opts={['true','false']} {...listeners} />
                     <FormInput name={`${id}source`} value={source} required {...listeners} />
                     <FormInput name={`${id}backup`} value={backup} required {...listeners} />
@@ -98,10 +142,10 @@ class Config extends Component {
             </ToastBody>
         )
     };
-    
+
     renderServiceMysql = ({opts = {}}) => {
         return (
-            <Toast>
+            <Toast className={'mysql'}>
                 <ToastHeader icon='primary'>
                     MySql
                 </ToastHeader>
@@ -111,7 +155,7 @@ class Config extends Component {
     };
     renderServiceRedis = ({opts = {}}) => {
         return (
-            <Toast>
+            <Toast className={'redis'}>
                 <ToastHeader icon='primary'>
                     Redis
                 </ToastHeader>
@@ -121,7 +165,7 @@ class Config extends Component {
     };
     renderServiceMongo = ({opts = {}}) => {
         return (
-            <Toast>
+            <Toast className={'mongo'}>
                 <ToastHeader icon='primary'>
                     Mongo
                 </ToastHeader>
@@ -140,21 +184,34 @@ class Config extends Component {
     };
     
     render () {
-        const { form = {}, collapsed = [] } = this.state;
+        const { loaded = false, messages = [], form = {}, collapsed = [] } = this.state;
         
         const listeners = { onChange: this.handleOnChange };
 
-        const { name = false, code = false, readonly = false, dateModified = false } = form || {};
+        const { name = false, port = false, socket = false, code = false, readonly = false, dateModified = false } = form || {};
         Log.info({ form });
+        if (loaded === false) return null;
         return (
             <div className={'d-flex flex-column Config'}>
+                <div className={'Messages w-100 d-flex justify-content-center'}>
+                    {messages.map((message, index )=> {
+                        return <Badge key={index}>{message}</Badge>
+                    })}
+                </div>
+                
                 <ListGroup className={'w-50'}>
                     <ListGroupItem color='info'>
-                        <ListGroupItemHeading title={Object.keys(form).join('; ')}>Config</ListGroupItemHeading>
+                        <ListGroupItemHeading title={Object.keys(form).join('; ')}>
+                            Config
+                        </ListGroupItemHeading>
                     </ListGroupItem>
                     <ListGroupItem>
                         <Form>
                             <FormInput name={'form.name'} value={name} required {...listeners} />
+                            <FormInput name={'form.port'} value={port} required {...listeners} />
+    
+                            <FormInput name={'form.socket'} value={socket} required {...listeners} />
+    
                             <FormInput name={'form.code'} value={code} required {...listeners} />
                             <FormSelect name='form.readonly' value={readonly} opts={['true','false']} {...listeners} />
                             <FormInput name={'form.dateModified'} value={Util.formatDate(dateModified)} required {...listeners} />

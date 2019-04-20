@@ -83,5 +83,14 @@ finished = (text, callback) => {
     if (text) console.log(text);
     if(typeof(callback) === 'function') callback();
 };
-
+compare = (obj1, obj2, expected = true) => {
+    let result = expected;
+    try {
+        result = ((JSON.stringify(obj1) === JSON.stringify(obj2)) === expected);
+    } catch (err) {
+        console.error('[ Error ] Util.compare', err);
+        result = expected;
+    }
+    return result;
+};
 module.exports = {};

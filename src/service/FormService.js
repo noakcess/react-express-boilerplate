@@ -7,9 +7,11 @@ import { propertyOf } from 'underscore';
 import axiosInternal from './modules/axiosInternal';
 import axiosExternal from './modules/axiosExternal';
 const Log = window.Log;
+const { REACT_APP_SERVER } = process.env;
+Log.info({ REACT_APP_SERVER });
 
 const { hostname } = window.location;
-const SERVER = `${hostname}:3001`;
+const SERVER = `${hostname}:${REACT_APP_SERVER}`;
 const EXPRESS = ('//' + SERVER);
 
 class FormService {
